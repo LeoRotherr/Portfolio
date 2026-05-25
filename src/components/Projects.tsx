@@ -1,28 +1,33 @@
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const projects = [
+type Project = {
+  year: string;
+  title: string;
+  category: string;
+  text: string;
+  tags: string[];
+  link?: string;
+  featured?: boolean;
+};
+
+const projects: Project[] = [
   {
-    year: "2026",
-    title: "MedSpace",
+    year: "2025",
+    title: "Clinizen",
     category: "SaaS · Healthtech",
-    text: "Plataforma completa de gestão para clínicas: agenda, prontuário eletrônico, financeiro e convênios. Multi-clínica, com controle de acesso e auditoria.",
+    text: "Plataforma de gestão para clínicas: agenda, prontuário e rotina do consultório em um só lugar. No ar e em produção.",
     tags: ["React", "TypeScript", "Supabase", "Tailwind"],
+    link: "https://clinizenapp.com.br",
     featured: true,
   },
   {
     year: "2025",
-    title: "Ledger Studio",
-    category: "Produto · Fintech",
-    text: "Painel financeiro para pequenos negócios com conciliação automática e relatórios visuais. Da pesquisa de usuário ao MVP em 10 semanas.",
-    tags: ["Next.js", "Node", "PostgreSQL"],
-  },
-  {
-    year: "2024",
-    title: "Atelier",
-    category: "Identidade · Web",
-    text: "Site e identidade visual para um estúdio de design. Direção de arte, motion e desenvolvimento front-end de alta fidelidade.",
-    tags: ["Design", "Framer Motion", "Branding"],
+    title: "Arena Burger",
+    category: "Web App · Food",
+    text: "Aplicação para uma hamburgueria — cardápio digital e pedidos online com experiência rápida no celular. No ar.",
+    tags: ["React", "TypeScript", "Tailwind"],
+    link: "https://arenaburgerapp.com.br",
   },
 ];
 
@@ -40,7 +45,7 @@ export function Projects() {
                 Trabalho selecionado
               </h2>
             </div>
-            <span className="hidden text-sm text-muted md:block">2024 — 2026</span>
+            <span className="hidden text-sm text-muted md:block">2025</span>
           </div>
         </Reveal>
 
@@ -48,7 +53,9 @@ export function Projects() {
           {projects.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.08}>
               <a
-                href="#contato"
+                href={p.link ?? "#contato"}
+                target={p.link ? "_blank" : undefined}
+                rel={p.link ? "noreferrer" : undefined}
                 className="group grid grid-cols-1 gap-6 border-b border-hairline py-10 transition-colors hover:bg-surface md:grid-cols-[auto_1fr_auto] md:items-start md:gap-12 md:px-4"
               >
                 <span className="font-serif text-sm text-muted md:pt-2">{p.year}</span>
