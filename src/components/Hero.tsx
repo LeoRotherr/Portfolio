@@ -103,10 +103,10 @@ export function Hero() {
           <div className="relative overflow-hidden rounded-[2rem] border border-hairline bg-navy-850">
             {hasPhoto ? (
               <img
-                src="/perfil.jpg"
+                src="/assets/perfil.jpg"
                 alt="Leonardo Rother"
                 onError={() => setHasPhoto(false)}
-                className="aspect-[4/5] w-full object-cover object-top"
+                className="aspect-[4/5] w-full object-cover object-center"
               />
             ) : (
               <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-950 text-6xl font-bold tracking-tightest text-accent/40">
