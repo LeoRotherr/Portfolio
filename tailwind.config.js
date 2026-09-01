@@ -4,25 +4,34 @@ export default {
   theme: {
     extend: {
       colors: {
-        ivory: "#F8F6F1",
-        surface: "#FFFFFF",
-        ink: "#17150F",
-        muted: "#6F6A5F",
-        hairline: "#E6E0D4",
+        navy: {
+          950: "#060F18",
+          900: "#0A1622",
+          850: "#0D1E2C",
+          800: "#112637",
+          700: "#16334A",
+        },
+        hairline: "#1B3346",
+        ink: "#E8F1F8",
+        muted: "#8CA3B7",
         accent: {
-          DEFAULT: "#9A5B33",
-          soft: "#F0E7DE",
+          DEFAULT: "#19D3C5",
+          strong: "#12B4A8",
+          soft: "rgba(25, 211, 197, 0.12)",
         },
       },
       fontFamily: {
-        serif: ['"Fraunces Variable"', "Georgia", "serif"],
         sans: ['"Inter Variable"', "system-ui", "sans-serif"],
       },
       maxWidth: {
-        content: "1120px",
+        content: "1180px",
       },
       letterSpacing: {
-        tightest: "-0.04em",
+        tightest: "-0.03em",
+      },
+      boxShadow: {
+        card: "0 18px 40px -24px rgba(0, 0, 0, 0.7)",
+        glow: "0 0 0 1px rgba(25, 211, 197, 0.25), 0 18px 40px -20px rgba(25, 211, 197, 0.35)",
       },
     },
   },

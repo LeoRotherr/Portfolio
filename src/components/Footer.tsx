@@ -1,14 +1,41 @@
+import { Github, Linkedin, Mail } from "lucide-react";
+
+const socials = [
+  { icon: Github, label: "GitHub", href: "https://github.com/leorotherr" },
+  { icon: Linkedin, label: "LinkedIn", href: "#" },
+  { icon: Mail, label: "Email", href: "mailto:leorotherr@gmail.com" },
+];
+
 export function Footer() {
   return (
-    <footer className="border-t border-hairline py-10">
-      <div className="container-x flex flex-col items-center justify-between gap-4 text-sm text-muted md:flex-row">
-        <span className="font-serif text-base text-ink">
-          Leonardo Rother<span className="text-accent">.</span>
-        </span>
-        <p>© {new Date().getFullYear()} — Feito com cuidado e café.</p>
-        <a href="#top" className="link-underline">
-          Voltar ao topo ↑
-        </a>
+    <footer className="border-t border-hairline bg-navy-950 py-10">
+      <div className="container-x flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="text-center md:text-left">
+          <span className="block font-semibold">
+            Leonardo Rother<span className="text-accent">.</span>
+          </span>
+          <span className="block text-sm text-muted">Desenvolvedor Full Stack</span>
+        </div>
+
+        <p className="text-sm text-muted">
+          © {new Date().getFullYear()} Leonardo Rother. Todos os direitos reservados.
+        </p>
+
+        <ul className="flex items-center gap-3">
+          {socials.map((s) => (
+            <li key={s.label}>
+              <a
+                href={s.href}
+                aria-label={s.label}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel={s.href.startsWith("http") ? "noreferrer" : undefined}
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-hairline text-muted transition-colors hover:border-accent hover:text-accent"
+              >
+                <s.icon className="h-4 w-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

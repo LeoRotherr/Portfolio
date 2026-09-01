@@ -12,18 +12,19 @@ export function Contact() {
   const [sent, setSent] = useState(false);
 
   return (
-    <section id="contato" className="border-t border-hairline py-24 md:py-32">
-      <div className="container-x grid gap-16 md:grid-cols-2">
+    <section id="contato" className="relative overflow-hidden border-t border-hairline py-24 md:py-28">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-navy-900 via-navy-850 to-navy-900" />
+      <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-80 w-[40rem] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
+
+      <div className="container-x grid gap-12 lg:grid-cols-2">
         <Reveal>
-          <p className="eyebrow">
-            <span className="h-px w-8 bg-accent" /> Contato
-          </p>
-          <h2 className="mt-5 font-serif text-4xl font-semibold leading-tight tracking-tightest md:text-6xl">
-            Vamos construir
+          <p className="eyebrow">Contato</p>
+          <h2 className="mt-4 text-4xl font-bold leading-tight tracking-tightest md:text-5xl">
+            Vamos criar algo
             <br />
-            algo <span className="italic text-accent">juntos</span>.
+            <span className="text-accent">incrível juntos?</span>
           </h2>
-          <p className="mt-6 max-w-sm leading-relaxed text-muted">
+          <p className="mt-6 max-w-md leading-relaxed text-muted">
             Tem um projeto, uma ideia ou só quer trocar uma ideia? Me manda uma
             mensagem — costumo responder em até um dia útil.
           </p>
@@ -33,12 +34,14 @@ export function Contact() {
               <li key={s.label}>
                 <a
                   href={s.href}
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
+                  rel={s.href.startsWith("http") ? "noreferrer" : undefined}
                   className="group inline-flex items-center gap-3 text-muted transition-colors hover:text-ink"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline transition-colors group-hover:border-accent group-hover:text-accent">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-hairline transition-colors group-hover:border-accent group-hover:text-accent">
                     <s.icon className="h-4 w-4" />
                   </span>
-                  <span className="link-underline">{s.label}</span>
+                  <span className="link-underline text-sm">{s.label}</span>
                 </a>
               </li>
             ))}
@@ -51,7 +54,7 @@ export function Contact() {
               e.preventDefault();
               setSent(true);
             }}
-            className="rounded-2xl border border-hairline bg-surface p-6 md:p-8"
+            className="card p-6 md:p-8"
           >
             <div className="space-y-5">
               <Field label="Nome" id="name" placeholder="Seu nome" />
@@ -65,13 +68,10 @@ export function Contact() {
                   rows={4}
                   required
                   placeholder="Conta um pouco sobre o que você tem em mente…"
-                  className="mt-2 w-full resize-none rounded-xl border border-hairline bg-ivory px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted/70 focus:border-accent"
+                  className="mt-2 w-full resize-none rounded-lg border border-hairline bg-navy-900 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted/60 focus:border-accent"
                 />
               </div>
-              <button
-                type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink py-3.5 text-sm font-medium text-ivory transition-transform hover:-translate-y-0.5"
-              >
+              <button type="submit" className="btn-primary w-full">
                 {sent ? "Mensagem enviada — obrigado!" : "Enviar mensagem"}
                 {!sent && <Send className="h-4 w-4" />}
               </button>
@@ -104,7 +104,7 @@ function Field({
         type={type}
         required
         placeholder={placeholder}
-        className="mt-2 w-full rounded-xl border border-hairline bg-ivory px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted/70 focus:border-accent"
+        className="mt-2 w-full rounded-lg border border-hairline bg-navy-900 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted/60 focus:border-accent"
       />
     </div>
   );
