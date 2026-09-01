@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Mail } from "lucide-react";
 
@@ -13,17 +12,35 @@ const stack = [
 ];
 
 export function Hero() {
-  const [hasPhoto, setHasPhoto] = useState(true);
-
   return (
     <section id="top" className="relative overflow-hidden pt-20">
-      {/* fundo */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-navy-800 via-navy-900 to-navy-900" />
-      <div className="pointer-events-none absolute -left-40 top-10 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-3xl" />
-      <div className="pointer-events-none absolute right-0 top-40 -z-10 h-[26rem] w-[26rem] rounded-full bg-sky-500/10 blur-3xl" />
+      {/* foto de fundo + escurecimento para o texto respirar */}
+      <div className="absolute inset-0">
+        <img
+          src="/assets/hero-fundo.jpg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-navy-950/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy-900 to-transparent" />
+        <div className="pointer-events-none absolute -left-40 top-10 h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-3xl" />
+      </div>
 
-      <div className="container-x grid items-center gap-12 py-16 md:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-        <div>
+      {/* retrato recortado — sangra até a borda da tela e encosta na base da
+          seção, atravessando as margens do conteúdo */}
+      <motion.img
+        src="/assets/perfil-recorte.png"
+        alt="Leonardo Rother"
+        initial={{ opacity: 0, y: 32 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-none absolute bottom-0 right-0 z-10 w-[12rem] max-w-full drop-shadow-[0_30px_50px_rgba(0,0,0,0.55)] sm:w-[20rem] lg:right-[6%] lg:w-[27rem] xl:w-[31rem]"
+      />
+
+      <div className="container-x relative grid items-center gap-8 pb-[17rem] pt-12 sm:pb-[22rem] md:pt-16 lg:min-h-[38rem] lg:grid-cols-[1.05fr_0.95fr] lg:pb-28">
+        <div className="relative z-10 max-w-xl">
           <motion.p
             className="text-sm font-medium text-accent"
             initial={{ opacity: 0, y: 16 }}
@@ -65,7 +82,7 @@ export function Hero() {
               Ver Projetos
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <a href="#contato" className="btn-ghost">
+            <a href="#contato" className="btn-ghost bg-navy-950/40 backdrop-blur-sm">
               <Mail className="h-4 w-4" />
               Entrar em Contato
             </a>
@@ -84,7 +101,7 @@ export function Hero() {
               {stack.map((t) => (
                 <span
                   key={t}
-                  className="rounded-lg border border-hairline bg-navy-850/70 px-3 py-1.5 text-xs font-medium text-muted"
+                  className="rounded-lg border border-white/10 bg-navy-950/70 px-3 py-1.5 text-xs font-medium text-ink/80 backdrop-blur-sm"
                 >
                   {t}
                 </span>
@@ -93,34 +110,6 @@ export function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="relative mx-auto w-full max-w-sm lg:max-w-none"
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <div className="absolute inset-x-6 bottom-6 top-6 -z-10 rounded-[2rem] bg-accent/15 blur-2xl" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-hairline bg-navy-850">
-            {hasPhoto ? (
-              <img
-                src="/assets/perfil.jpg"
-                alt="Leonardo Rother"
-                onError={() => setHasPhoto(false)}
-                className="aspect-[4/5] w-full object-cover object-center"
-              />
-            ) : (
-              <div className="flex aspect-[4/5] w-full items-center justify-center bg-gradient-to-br from-navy-800 to-navy-950 text-6xl font-bold tracking-tightest text-accent/40">
-                LR
-              </div>
-            )}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy-900 to-transparent" />
-          </div>
-
-          <div className="absolute -bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-hairline bg-navy-850 px-4 py-2 text-xs font-medium shadow-card">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-            Disponível para novos projetos
-          </div>
-        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageFilter
 import os, re
 
 SRC = "assets-originais"
@@ -49,17 +49,41 @@ def fit(im, max_w, max_h):
 # ---------------------------------------------------------------- hero photo
 foto = Image.open(f"{SRC}/foto-header.png").convert("RGB")
 w, h = foto.size
-# o rosto fica à direita do centro — recorte 4:5 ancorado nele
-cx = int(w * 0.605)
-cw = int(h * 0.8)
-left = max(0, min(w - cw, cx - cw // 2))
-perfil = foto.crop((left, 0, left + cw, h)).resize((900, 1125), Image.LANCZOS)
-perfil.save(f"{OUT}/perfil.jpg", quality=86, optimize=True, progressive=True)
 
-# versão larga (fallback / og:image)
+# versão larga, usada como og:image
 wide = foto.copy()
 wide.thumbnail((1600, 1600), Image.LANCZOS)
 wide.save(f"{OUT}/foto-header.jpg", quality=84, optimize=True, progressive=True)
+
+# ------------------------------------------------- hero: recorte + fundo
+# O recorte usa segmentação local (rembg/u2net_human_seg) — a foto não sai
+# da máquina. O modelo (~176 MB) é baixado na primeira execução.
+try:
+    from rembg import new_session, remove
+except ImportError:  # pragma: no cover
+    print("! rembg não instalado — pulando o recorte do hero (pip install rembg onnxruntime)")
+else:
+    cut = remove(
+        foto.convert("RGBA"),
+        session=new_session("u2net_human_seg"),
+        alpha_matting=True,
+        alpha_matting_foreground_threshold=250,
+        alpha_matting_background_threshold=15,
+        alpha_matting_erode_size=8,
+    )
+    cut = cut.crop(cut.getbbox())
+    cut.save(f"{OUT}/perfil-recorte.png", optimize=True)
+
+# Fundo do hero: a metade esquerda da foto (só mar, céu e skyline) espelhada
+# para cobrir a largura toda — assim o fundo não repete a pessoa do recorte.
+PESSOA_X, FUNDO_H = 780, 790  # corta as pedras do rodapé, que denunciam o espelho
+base = foto.crop((0, 0, PESSOA_X, FUNDO_H))
+fundo = Image.new("RGB", (PESSOA_X * 2, FUNDO_H))
+fundo.paste(base.transpose(Image.FLIP_LEFT_RIGHT), (0, 0))
+fundo.paste(base, (PESSOA_X, 0))
+fundo = fundo.filter(ImageFilter.GaussianBlur(3))
+fundo = fundo.resize((1800, int(FUNDO_H * 1800 / (PESSOA_X * 2))), Image.LANCZOS)
+fundo.save(f"{OUT}/hero-fundo.jpg", quality=80, optimize=True, progressive=True)
 
 # ---------------------------------------------------------------- logo
 logo = Image.open(f"{SRC}/logo-leonardo-rother.jpeg").convert("RGB")
