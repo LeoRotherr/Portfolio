@@ -23,9 +23,11 @@ baixado na primeira execução. Sem ele o script pula o recorte e gera o resto.
 - `assets/logo-lockup.png` — monograma + nome (rodapé).
 - `assets/favicon.png` e `assets/apple-touch-icon.png`.
 - `assets/tech/*` — logos das tecnologias, recoloridos para o fundo escuro.
+- `projetos/*.webp` — as prints dos projetos usadas nos cards (`clinizen`,
+  `arena-burger`, `le-jardin`, `hospital-contratos`). Vêm dos originais em
+  `assets-originais/`, reduzidas para 1280px de largura pelo mesmo script.
 
-## O que ainda falta
-
-- `projetos/clinizen.png` e `projetos/arena-burger.png` — screenshots dos projetos
-  (recomendado: 1600×1000px). Sem eles o card mostra um mock de navegador com o
-  domínio.
+Para adicionar um projeto novo: coloque a print em `assets-originais/`, some o
+par `(arquivo, slug)` na lista de prints do script, rode o script e cadastre o
+projeto em `src/components/Projects.tsx` usando o mesmo slug. Se a print faltar,
+o card cai no mock de navegador com o domínio.
