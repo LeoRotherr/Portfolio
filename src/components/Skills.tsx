@@ -1,4 +1,4 @@
-import { Reveal } from "./Reveal";
+import { Reveal, Stagger, StaggerItem } from "./Reveal";
 
 const logos = [
   { name: "React", src: "/assets/tech/react.png", className: "h-9" },
@@ -47,16 +47,15 @@ export function Skills() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-muted">
                   {g.label}
                 </h3>
-                <div className="mt-4 flex flex-wrap gap-3">
+                <Stagger className="mt-4 flex flex-wrap gap-3" step={0.045}>
                   {g.items.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-lg border border-hairline bg-navy-850 px-4 py-2 text-sm transition-colors hover:border-accent hover:text-accent"
-                    >
-                      {item}
-                    </span>
+                    <StaggerItem key={item}>
+                      <span className="block rounded-lg border border-hairline bg-navy-850 px-4 py-2 text-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent">
+                        {item}
+                      </span>
+                    </StaggerItem>
                   ))}
-                </div>
+                </Stagger>
               </div>
             </Reveal>
           ))}
@@ -68,19 +67,22 @@ export function Skills() {
           <p className="text-center text-xs uppercase tracking-[0.18em] text-muted">
             Tecnologias e serviços que uso no dia a dia
           </p>
-          <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:gap-x-16">
+          <Stagger
+            className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8 md:gap-x-16"
+            step={0.08}
+          >
             {logos.map((logo) => (
-              <li key={logo.name}>
+              <StaggerItem key={logo.name}>
                 <img
                   src={logo.src}
                   alt={logo.name}
                   title={logo.name}
                   loading="lazy"
-                  className={`${logo.className} w-auto opacity-75 transition duration-300 hover:scale-105 hover:opacity-100`}
+                  className={`${logo.className} w-auto opacity-75 transition duration-300 hover:scale-110 hover:opacity-100`}
                 />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </Reveal>
     </section>

@@ -7,6 +7,22 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* o cabeçalho fixo não cobre o topo da seção ao clicar no menu */
+    scroll-padding-top: 6rem;
+  }
+  /* quem pediu menos movimento no sistema recebe o site praticamente estático */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   body {
     @apply bg-navy-900 text-ink font-sans antialiased;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
-import { Reveal } from "./Reveal";
+import { Reveal, Stagger, StaggerItem } from "./Reveal";
 
 type Project = {
   slug: string;
@@ -75,14 +75,14 @@ export function Projects() {
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.08}>
+        <Stagger className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" delay={0.1}>
+          {projects.map((p) => (
+            <StaggerItem key={p.slug} className="h-full">
               <ProjectCard project={p} />
-            </Reveal>
+            </StaggerItem>
           ))}
 
-          <Reveal delay={0.16}>
+          <StaggerItem className="h-full">
             <a
               href="#contato"
               className="card group flex h-full flex-col items-center justify-center gap-3 border-dashed p-8 text-center transition-colors hover:border-accent/60"
@@ -99,8 +99,8 @@ export function Projects() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </a>
-          </Reveal>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </div>
     </section>
   );
@@ -108,6 +108,7 @@ export function Projects() {
 
 function ProjectCard({ project: p }: { project: Project }) {
   const [hasShot, setHasShot] = useState(true);
+  const [shotLoaded, setShotLoaded] = useState(false);
   const emDev = p.status === "em-desenvolvimento";
   const domain = p.link?.replace(/^https?:\/\//, "") ?? "em breve";
 
@@ -119,19 +120,31 @@ function ProjectCard({ project: p }: { project: Project }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`card group flex h-full flex-col overflow-hidden transition-all ${
-        p.link ? "hover:-translate-y-1 hover:border-accent/50" : ""
+      className={`card group flex h-full flex-col overflow-hidden transition-all duration-300 ${
+        p.link
+          ? "hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-glow"
+          : "hover:border-amber-300/30"
       }`}
     >
       <div className="relative aspect-[2/1] overflow-hidden border-b border-hairline bg-navy-950">
         {hasShot ? (
-          <img
-            src={`/projetos/${p.slug}.webp`}
-            alt={`Preview do projeto ${p.title}`}
-            loading="lazy"
-            onError={() => setHasShot(false)}
-            className="h-full w-full bg-navy-950 object-contain object-top transition-transform duration-500 group-hover:scale-105"
-          />
+          <>
+            {/* esqueleto enquanto a print não chega */}
+            {!shotLoaded && (
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-navy-800 to-navy-950" />
+            )}
+            <img
+              src={`/projetos/${p.slug}.webp`}
+              alt={`Preview do projeto ${p.title}`}
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setShotLoaded(true)}
+              onError={() => setHasShot(false)}
+              className={`relative h-full w-full object-contain object-top transition-all duration-700 group-hover:scale-[1.04] ${
+                shotLoaded ? "scale-100 opacity-100 blur-0" : "scale-[1.02] opacity-0 blur-sm"
+              }`}
+            />
+          </>
         ) : (
           <div className="flex h-full w-full flex-col bg-gradient-to-br from-navy-700 to-navy-950">
             <div className="flex items-center gap-1.5 border-b border-hairline/60 px-3 py-2">

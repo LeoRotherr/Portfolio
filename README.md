@@ -40,6 +40,20 @@ Tudo fica em `src/components/`:
 
 Cores e fontes ficam em `tailwind.config.js`.
 
+## Animações
+
+- `Loader.tsx` — cortina de carregamento com o monograma e barra de progresso;
+  sai quando a página termina de carregar (com teto de 4s) e libera a entrada do
+  hero.
+- `ScrollProgress.tsx` — fio no topo com o quanto da página já foi lido.
+- `Reveal.tsx` — `<Reveal>` para blocos soltos e `<Stagger>`/`<StaggerItem>`
+  para revelar grades em cascata.
+- `Hero.tsx` — parallax do fundo, do retrato e do texto conforme a rolagem.
+- `BackToTop.tsx` — botão flutuante que aparece depois do hero.
+
+Tudo respeita `prefers-reduced-motion`: quem pede menos movimento no sistema vê
+o site praticamente estático (o corte também está no `src/index.css`).
+
 ## Imagens & assets
 
 - `assets-originais/` — os arquivos originais, do jeito que vieram (fora do
