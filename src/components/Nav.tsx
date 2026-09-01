@@ -43,13 +43,11 @@ export function Nav() {
     >
       <nav className="container-x flex h-20 items-center justify-between">
         <a href="#top" className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/40 bg-accent-soft">
-            <img
-              src="/assets/logo-monograma.png"
-              alt="Monograma Leonardo Rother"
-              className="h-7 w-7 object-contain"
-            />
-          </span>
+          <img
+            src="/assets/logo-monograma.png"
+            alt="Monograma Leonardo Rother"
+            className="h-11 w-11 object-contain"
+          />
           <span className="leading-tight">
             <span className="block text-base font-semibold">Leonardo Rother</span>
             <span className="block text-xs text-muted">Desenvolvedor Full Stack</span>
