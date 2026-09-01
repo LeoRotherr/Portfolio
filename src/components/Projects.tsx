@@ -8,7 +8,8 @@ type Project = {
   category: string;
   text: string;
   tags: string[];
-  link: string;
+  link?: string;
+  status: "no-ar" | "em-desenvolvimento";
   featured?: boolean;
 };
 
@@ -17,18 +18,36 @@ const projects: Project[] = [
     slug: "clinizen",
     title: "Clinizen",
     category: "Sistema de gestão para clínicas",
-    text: "Agenda, prontuário e rotina do consultório em um só lugar. No ar e em produção.",
+    text: "Plataforma de gestão para clínicas médicas e odontológicas: agenda do dia, prontuário, confirmação de consulta por WhatsApp e financeiro no mesmo sistema. Suporta várias clínicas na mesma conta.",
     tags: ["React", "TypeScript", "Supabase"],
     link: "https://clinizenapp.com.br",
+    status: "no-ar",
     featured: true,
   },
   {
     slug: "arena-burger",
     title: "Arena Burger",
     category: "Cardápio digital & pedidos online",
-    text: "Aplicação para uma hamburgueria, com experiência rápida e pensada para o celular. No ar.",
+    text: "Cardápio digital para hamburgueria com busca por item, status de aberto/fechado em tempo real e checkout pensado primeiro para o celular — do carrinho ao pedido em poucos toques.",
     tags: ["React", "TypeScript", "Tailwind CSS"],
     link: "https://arenaburgerapp.com.br",
+    status: "no-ar",
+  },
+  {
+    slug: "le-jardin",
+    title: "Le Jardin",
+    category: "Gestão para café & restaurante",
+    text: "Sistema de salão e cozinha: painel com faturamento do dia, ticket médio e mesas ocupadas, além de cardápio, comandas via QR nas mesas, estoque, balcão e financeiro por turno.",
+    tags: ["React", "TypeScript", "Supabase", "Tailwind CSS"],
+    status: "em-desenvolvimento",
+  },
+  {
+    slug: "hospital-contratos",
+    title: "Administrativo Hospitalar",
+    category: "Controle de contratos e empenhos",
+    text: "Sistema interno para o administrativo de um hospital público: contratos ativos, solicitação e anulação de empenho, saldo, pagamentos mensais e análise financeira — com mural, chat e chamados da manutenção.",
+    tags: ["React", "TypeScript", "Supabase", "Node.js"],
+    status: "em-desenvolvimento",
   },
 ];
 
@@ -89,23 +108,29 @@ export function Projects() {
 
 function ProjectCard({ project: p }: { project: Project }) {
   const [hasShot, setHasShot] = useState(true);
-  const domain = p.link.replace(/^https?:\/\//, "");
+  const emDev = p.status === "em-desenvolvimento";
+  const domain = p.link?.replace(/^https?:\/\//, "") ?? "em breve";
+
+  const Wrapper = p.link ? "a" : "div";
+  const wrapperProps = p.link
+    ? { href: p.link, target: "_blank", rel: "noreferrer" as const }
+    : {};
 
   return (
-    <a
-      href={p.link}
-      target="_blank"
-      rel="noreferrer"
-      className="card group flex h-full flex-col overflow-hidden transition-all hover:-translate-y-1 hover:border-accent/50"
+    <Wrapper
+      {...wrapperProps}
+      className={`card group flex h-full flex-col overflow-hidden transition-all ${
+        p.link ? "hover:-translate-y-1 hover:border-accent/50" : ""
+      }`}
     >
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-hairline bg-navy-800">
+      <div className="relative aspect-[2/1] overflow-hidden border-b border-hairline bg-navy-950">
         {hasShot ? (
           <img
-            src={`/projetos/${p.slug}.png`}
+            src={`/projetos/${p.slug}.webp`}
             alt={`Preview do projeto ${p.title}`}
             loading="lazy"
             onError={() => setHasShot(false)}
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full bg-navy-950 object-contain object-top transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full w-full flex-col bg-gradient-to-br from-navy-700 to-navy-950">
@@ -123,17 +148,27 @@ function ProjectCard({ project: p }: { project: Project }) {
           </div>
         )}
 
-        {p.featured && (
-          <span className="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-navy-950">
-            Em destaque
-          </span>
-        )}
+        <div className="absolute right-3 top-3 flex flex-wrap items-center justify-end gap-2">
+          {p.featured && (
+            <span className="rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-navy-950">
+              Em destaque
+            </span>
+          )}
+          {emDev && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-navy-950/80 px-3 py-1 text-[11px] font-semibold text-amber-300 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
+              Em desenvolvimento
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-6">
         <div className="flex items-start justify-between gap-3">
           <h3 className="text-lg font-semibold">{p.title}</h3>
-          <ArrowUpRight className="h-5 w-5 flex-none text-muted transition-colors group-hover:text-accent" />
+          {p.link && (
+            <ArrowUpRight className="h-5 w-5 flex-none text-muted transition-colors group-hover:text-accent" />
+          )}
         </div>
         <p className="mt-1 text-sm text-accent">{p.category}</p>
         <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{p.text}</p>
@@ -148,6 +183,6 @@ function ProjectCard({ project: p }: { project: Project }) {
           ))}
         </div>
       </div>
-    </a>
+    </Wrapper>
   );
 }

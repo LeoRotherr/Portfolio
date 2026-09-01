@@ -3,7 +3,9 @@ import os, re
 
 SRC = "assets-originais"
 OUT = "public/assets"
+SHOTS = "public/projetos"
 os.makedirs(OUT + "/tech", exist_ok=True)
+os.makedirs(SHOTS, exist_ok=True)
 
 INK = (232, 241, 248)
 
@@ -125,6 +127,24 @@ for src, max_sat in [
 svg = open(f"{SRC}/node.svg", encoding="utf-8").read()
 svg = re.sub(r'fill="#333"', 'fill="#E8F1F8"', svg)
 open(f"{OUT}/tech/node.svg", "w", encoding="utf-8").write(svg)
+
+# ------------------------------------------------- prints dos projetos
+# As prints entram nos cards com recorte 16/10 alinhado ao topo; aqui só
+# limitamos a largura e salvamos em webp para o card carregar leve.
+for src, slug in [
+    ("Clinizen.png", "clinizen"),
+    ("Arena.png", "arena-burger"),
+    ("Le Jardin.png", "le-jardin"),
+    ("AdmHospital.png", "hospital-contratos"),
+]:
+    shot = Image.open(f"{SRC}/{src}").convert("RGB")
+    shot.thumbnail((1280, 1280), Image.LANCZOS)
+    shot.save(f"{SHOTS}/{slug}.webp", quality=82, method=6)
+
+for root, _, files in os.walk(SHOTS):
+    for f in sorted(files):
+        p = os.path.join(root, f)
+        print(f"{p:44} {os.path.getsize(p)/1024:8.1f} KB")
 
 for root, _, files in os.walk(OUT):
     for f in sorted(files):
