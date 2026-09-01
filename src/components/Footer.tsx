@@ -10,11 +10,14 @@ export function Footer() {
   return (
     <footer className="border-t border-hairline bg-navy-950 py-10">
       <div className="container-x flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="text-center md:text-left">
-          <span className="block font-semibold">
-            Leonardo Rother<span className="text-accent">.</span>
-          </span>
-          <span className="block text-sm text-muted">Desenvolvedor Full Stack</span>
+        <div className="flex flex-col items-center gap-3 md:items-start">
+          <img
+            src="/assets/logo-lockup.png"
+            alt="Leonardo Rother"
+            className="h-14 w-auto"
+            loading="lazy"
+          />
+          <span className="text-sm text-muted">Desenvolvedor Full Stack</span>
         </div>
 
         <p className="text-sm text-muted">

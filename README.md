@@ -40,4 +40,20 @@ Tudo fica em `src/components/`:
 
 Cores e fontes ficam em `tailwind.config.js`.
 
+## Imagens & assets
+
+- `assets-originais/` — os arquivos originais, do jeito que vieram (fora do
+  `public/`, então não vão para o build).
+- `public/assets/` — as versões otimizadas que o site consome
+  (`/assets/perfil.jpg`, `/assets/logo-monograma.png`, `/assets/tech/*`…).
+
+Para regerar as versões otimizadas depois de trocar um original:
+
+```bash
+pip install pillow
+python3 scripts/otimizar-assets.py
+```
+
+Detalhes de cada arquivo em `public/README.md`.
+
 > Conteúdo atual é placeholder — troque nome, bio, projetos e links pelos seus dados reais.
