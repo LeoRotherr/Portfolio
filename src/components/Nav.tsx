@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const links = [
@@ -34,19 +35,28 @@ export function Nav() {
   }, []);
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
           ? "border-b border-hairline bg-navy-950/85 backdrop-blur-md"
           : "border-b border-transparent"
       }`}
     >
-      <nav className="container-x flex h-20 items-center justify-between">
-        <a href="#top" className="flex items-center gap-3">
+      <nav
+        className={`container-x flex items-center justify-between transition-all duration-300 ${
+          scrolled ? "h-16" : "h-20"
+        }`}
+      >
+        <a href="#top" className="group flex items-center gap-3">
           <img
             src="/assets/logo-monograma.png"
             alt="Monograma Leonardo Rother"
-            className="h-11 w-11 object-contain"
+            className={`w-auto object-contain transition-all duration-300 group-hover:rotate-[-6deg] ${
+              scrolled ? "h-9" : "h-11"
+            }`}
           />
           <span className="leading-tight">
             <span className="block text-base font-semibold">Leonardo Rother</span>
@@ -59,13 +69,18 @@ export function Nav() {
             <li key={l.href}>
               <a
                 href={l.href}
-                className={`transition-colors ${
-                  active === l.href
-                    ? "border-b-2 border-accent pb-1 text-accent"
-                    : "text-muted hover:text-ink"
+                className={`relative block pb-1 transition-colors ${
+                  active === l.href ? "text-accent" : "text-muted hover:text-ink"
                 }`}
               >
                 {l.label}
+                {active === l.href && (
+                  <motion.span
+                    layoutId="nav-ativo"
+                    className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-accent"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
               </a>
             </li>
           ))}
@@ -87,21 +102,35 @@ export function Nav() {
         </div>
       </nav>
 
-      {open && (
-        <ul className="border-t border-hairline bg-navy-950/95 px-6 py-4 text-sm backdrop-blur-md lg:hidden">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block py-3 text-muted transition-colors hover:text-accent"
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.ul
+            key="menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden border-t border-hairline bg-navy-950/95 px-6 text-sm backdrop-blur-md lg:hidden"
+          >
+            {links.map((l, i) => (
+              <motion.li
+                key={l.href}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.06 * i, duration: 0.3 }}
               >
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </header>
+                <a
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block py-3 text-muted transition-colors hover:text-accent"
+                >
+                  {l.label}
+                </a>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }
