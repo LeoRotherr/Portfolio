@@ -1,9 +1,2 @@
-node_modules
 dist
-dist-ssr
-*.local
-.DS_Store
-shots
-shot.mjs
-bun.lockb
-.vercel
+node_modules
