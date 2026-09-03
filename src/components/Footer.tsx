@@ -1,6 +1,7 @@
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, MessageCircle } from "lucide-react";
 
 const socials = [
+  { icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/5543984366572" },
   { icon: Github, label: "GitHub", href: "https://github.com/leorotherr" },
   { icon: Linkedin, label: "LinkedIn", href: "#" },
   { icon: Mail, label: "Email", href: "mailto:leorotherr@gmail.com" },
