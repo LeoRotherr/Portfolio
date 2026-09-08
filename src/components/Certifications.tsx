@@ -1,4 +1,4 @@
-import { BadgeCheck, Brain, ExternalLink, Layers, Rocket, ShieldCheck } from "lucide-react";
+import { BadgeCheck, Brain, Clock, ExternalLink, Layers, Rocket, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "./Reveal";
 
@@ -8,8 +8,12 @@ type Credential = {
   issuer?: string;
   /** período ou ano de conclusão, ex.: "2025" ou "2025 — 2026" */
   period?: string;
-  /** etiqueta do card: "Verificado", "Concluída", "Em andamento"… */
+  /** etiqueta do card: "Verificado", "Concluído", "Cursando"… */
   badge?: string;
+  /** ícone da etiqueta — o padrão é o selo de concluído */
+  badgeIcon?: LucideIcon;
+  /** "andamento" deixa a etiqueta discreta, para o que ainda não terminou */
+  badgeTone?: "concluido" | "andamento";
   description: string;
   skills?: string[];
   icon: LucideIcon;
@@ -22,14 +26,18 @@ type Credential = {
 const posGraduacao: Credential[] = [
   {
     title: "Arquitetura de Software",
-    badge: "Pós-graduação",
+    badge: "Cursando",
+    badgeIcon: Clock,
+    badgeTone: "andamento",
     icon: Layers,
     description:
       "Padrões de arquitetura, sistemas distribuídos e as decisões técnicas que sustentam software em escala — do desenho da solução ao trade-off de cada escolha.",
   },
   {
     title: "Inteligência Artificial",
-    badge: "Pós-graduação",
+    badge: "Cursando",
+    badgeIcon: Clock,
+    badgeTone: "andamento",
     icon: Brain,
     description:
       "Machine learning, modelos de linguagem e aplicação prática de IA em produto: como transformar dados e modelos em funcionalidades que resolvem problema real.",
@@ -69,6 +77,12 @@ const grupos = [
 ];
 
 function CredentialCard({ item }: { item: Credential }) {
+  const BadgeIcon = item.badgeIcon ?? BadgeCheck;
+  const badgeClass =
+    item.badgeTone === "andamento"
+      ? "border-hairline bg-navy-800/60 text-muted"
+      : "border-accent/40 bg-accent-soft text-accent";
+
   return (
     <article className="card group flex h-full flex-col p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-glow">
       <div className="flex items-start gap-4">
@@ -87,8 +101,10 @@ function CredentialCard({ item }: { item: Credential }) {
 
         <div className="min-w-0">
           {item.badge && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent-soft px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <BadgeCheck className="h-3 w-3" />
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] ${badgeClass}`}
+            >
+              <BadgeIcon className="h-3 w-3" />
               {item.badge}
             </span>
           )}
